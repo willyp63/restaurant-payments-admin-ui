@@ -4,6 +4,29 @@
   margin: 48px 5%;
 }
 
-.items-table {
+h2 {
   margin-top: 48px;
+}
+
+.items-table {
+  position: relative;
+}
+
+.new-btn {
+  position: absolute;
+  top: -24px;
+  right: 24px;
+}
+
+.actions-cell {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.table-info {
+  display: flex;
+}
+
+.qr-code {
+  margin-left: 48px;
 }
