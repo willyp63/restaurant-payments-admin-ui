@@ -1,0 +1,39 @@
+@import '~@angular/material/theming';
+
+.table-receipt {
+  width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qr-code {
+  width: 256px;
+  height: 256px;
+}
+
+.table-name {
+  align-self: flex-start;
+
+  font-size: 28px;
+}
+
+.divider {
+  width: 100%;
+  height: 4px;
+  margin: 16px 0;
+  border-bottom: 2px solid map-get($mat-grey, 900);
+}
+
+.items {
+  width: 100%;
+}
+
+.item-line {
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 20px;
+  line-height: 36px;
+}

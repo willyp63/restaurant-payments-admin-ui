@@ -1,0 +1,24 @@
+<div class="table-receipt">
+  <canvas #qrCode class="qr-code"></canvas>
+  <ng-container *ngIf="table">
+    <div class="table-name">{{ table.name }}</div>
+    <div class="divider"></div>
+    <ul class="items">
+      <li *ngFor="let item of table.items" class="item-line">
+        <span>{{ item.name }}</span><span>{{ item.price | currency }}</span>
+      </li>
+    </ul>
+    <div class="divider"></div>
+    <ul class="items">
+      <li class="item-line">
+        <span>Subtotal:</span><span>{{ subtotal | currency }}</span>
+      </li>
+      <li class="item-line">
+        <span>Tax:</span><span>{{ tax | currency }}</span>
+      </li>
+      <li class="item-line">
+        <span>Total:</span><span>{{ total | currency }}</span>
+      </li>
+    </ul>
+  </ng-container>
+</div>

@@ -54,7 +54,7 @@ export class TableDetailsComponent implements OnInit {
   openNewItemDialog() {
     const dialogRef = this._dialog.open(NewItemDialogComponent, {
       width: '250px',
-      data: { name: '', price: 0 },
+      data: { name: '' },
     });
 
     dialogRef.afterClosed().subscribe((item: TableItem) => {
@@ -77,7 +77,10 @@ export class TableDetailsComponent implements OnInit {
   }
 
   removeItem(item: TableItem) {
-    this._tableItemService.removeTableItem(item);
+    this._tableItemService.removeTableItem(item).subscribe(() => {
+      this.items.splice(this.items.indexOf(item), 1);
+      this.refreshTable();
+    });
   }
 
   private addItemToTable(item: TableItem) {

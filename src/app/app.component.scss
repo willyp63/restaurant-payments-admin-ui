@@ -10,3 +10,10 @@ mat-toolbar,
 .nav-underlay {
   height: 64px;
 }
+
+@media print {
+  mat-toolbar,
+  .nav-underlay {
+    display: none;
+  }
+}

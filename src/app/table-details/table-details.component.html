@@ -1,4 +1,9 @@
 <div class="table-details">
+  <button *ngIf="tableId" mat-button [routerLink]="'/table/' + tableId + '/receipt'" class="print-btn">
+    Print Receipt
+    <mat-icon aria-hidden="true">print</mat-icon>
+  </button>
+
   <div class="table-info">
     <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8 full-width">
       <!-- Name Column -->

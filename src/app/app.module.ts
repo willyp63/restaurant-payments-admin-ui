@@ -19,10 +19,12 @@ import { EditableFieldComponent } from './editable-field/editable-field.componen
 import { FormsModule } from '@angular/forms';
 import { NewTableDialogComponent } from './dashboard/new-table-dialog/new-table-dialog.component';
 import { NewItemDialogComponent } from './table-details/new-item-dialog/new-item-dialog.component';
+import { TableReceiptComponent } from './table-receipt/table-receipt.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'table/:id', component: TableDetailsComponent },
+  { path: 'table/:id/receipt', component: TableReceiptComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
@@ -35,6 +37,7 @@ const routes: Routes = [
     EditableFieldComponent,
     NewTableDialogComponent,
     NewItemDialogComponent,
+    TableReceiptComponent,
   ],
   imports: [
     BrowserModule,
