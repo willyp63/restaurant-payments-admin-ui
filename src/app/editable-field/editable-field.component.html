@@ -1,0 +1,19 @@
+<div class="editable-field">
+  <div *ngIf="isEditing">
+    <mat-form-field class="full-width">
+      <input matInput [(ngModel)]="currentValue" [value]="value">
+    </mat-form-field>
+  </div>
+  <span *ngIf="!isEditing">{{ value }}</span>
+
+  <button *ngIf="!isEditing" mat-icon-button (click)="onEdit()">
+    <mat-icon aria-label="Edit">edit</mat-icon>
+  </button>
+
+  <button *ngIf="isEditing" mat-icon-button (click)="onCancel()">
+    <mat-icon aria-label="Clear">clear</mat-icon>
+  </button>
+  <button *ngIf="isEditing" mat-icon-button (click)="onSave()">
+    <mat-icon aria-label="Save">save</mat-icon>
+  </button>
+</div>

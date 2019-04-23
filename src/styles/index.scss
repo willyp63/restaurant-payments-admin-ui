@@ -1,0 +1,13 @@
+@import "./reset.scss";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.full-width {
+  width: 100%;
+}
+
+h2 {
+  font-size: 36px;
+  padding: 12px 0;
+  font-weight: bold;
+  font-family: sans-serif;
+}
