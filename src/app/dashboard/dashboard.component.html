@@ -3,7 +3,9 @@
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element">
+        <a [routerLink]="'/table/' + element._id">{{element.name}}</a>
+      </td>
     </ng-container>
 
     <!-- CreatedAt Column -->
@@ -17,9 +19,6 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let element">
         <div class="actions-cell">
-          <button mat-icon-button [routerLink]="'/table/' + element._id">
-            <mat-icon aria-label="Details">edit</mat-icon>
-          </button>
           <button mat-icon-button (click)="removeTable(element)">
             <mat-icon aria-label="Delete">delete</mat-icon>
           </button>
