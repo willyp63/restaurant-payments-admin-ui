@@ -70,8 +70,8 @@ export class TableDetailsComponent implements OnInit {
     });
   }
 
-  onItemPriceChange(item: TableItem, itemPrice: number) {
-    this._tableItemService.updateTableItem(item._id, { price: itemPrice }).subscribe((updatedItem: TableItem) => {
+  onItemPriceChange(item: TableItem, itemPrice: string) {
+    this._tableItemService.updateTableItem(item._id, { price: parseFloat(itemPrice) }).subscribe((updatedItem: TableItem) => {
       item.price = updatedItem.price;
     });
   }
