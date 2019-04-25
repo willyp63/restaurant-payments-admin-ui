@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
   }
 
   removeTable(table: Table) {
-    this._tableService.removeTable(table).subscribe(() => {
+    this._tableService.removeTable(table._id).subscribe(() => {
       this.tables.splice(this.tables.indexOf(table), 1);
       this.refreshTable();
     });

@@ -11,26 +11,26 @@ export class TableService {
   constructor(private readonly http: HttpClient) { }
 
   getTables(): Observable<Table[]> {
-    return this.http.get(`${environment.apiUrl}/table/all`) as Observable<Table[]>;
+    return this.http.get(`${environment.apiUrl}/table`) as Observable<Table[]>;
   }
 
   getTableById(tableId: string): Observable<Table> {
     return this.http.get(`${environment.apiUrl}/table/${tableId}`) as Observable<Table>;
   }
 
-  addTable(table: Table): Observable<Table> {
-    return this.http.post(`${environment.apiUrl}/table/new`, table) as Observable<Table>;
+  addTable(table: Partial<Table>): Observable<Table> {
+    return this.http.post(`${environment.apiUrl}/table`, table) as Observable<Table>;
   }
 
-  removeTable(table: Table): Observable<Object> {
-    return this.http.delete(`${environment.apiUrl}/table/${table._id}`) as Observable<Object>;
+  removeTable(tableId: string): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}/table/${tableId}`) as Observable<Object>;
   }
 
-  updateTable(tableId: string, table: Table): Observable<Table> {
-    return this.http.patch(`${environment.apiUrl}/table/${tableId}`, table) as Observable<Table>;
+  updateTable(tableId: string, table: Partial<Table>): Observable<Object> {
+    return this.http.patch(`${environment.apiUrl}/table/${tableId}`, table) as Observable<Object>;
   }
 
-  addItemToTable(tableId: string, item: TableItem): Observable<TableItem> {
+  addItemToTable(tableId: string, item: Partial<TableItem>): Observable<TableItem> {
     return this.http.post(`${environment.apiUrl}/table/${tableId}/add-item`, item) as Observable<TableItem>;
   }
 }

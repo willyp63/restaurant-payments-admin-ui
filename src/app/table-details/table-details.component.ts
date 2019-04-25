@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewItemDialogComponent } from './new-item-dialog/new-item-dialog.component';
 import { TableItemService } from '../services/table-item.service';
 import { toCanvas } from 'qrcode';
+import { PaymentService } from '../services/payment.service';
 
 @Component({
   selector: 'app-table-details',
@@ -16,7 +17,7 @@ import { toCanvas } from 'qrcode';
 })
 export class TableDetailsComponent implements OnInit {
   tableDisplayedColumns: string[] = ['name', 'createdAt'];
-  itemsDisplayedColumns: string[] = ['name', 'price', 'actions'];
+  itemsDisplayedColumns: string[] = ['name', 'price', 'paidFor', 'actions'];
   tableDataSource = new MatTableDataSource<Table>();
   itemsDataSource = new MatTableDataSource<TableItem>();
   tableId: string;
@@ -27,6 +28,7 @@ export class TableDetailsComponent implements OnInit {
   constructor(
     private readonly _tableService: TableService,
     private readonly _tableItemService: TableItemService,
+    private readonly _paymentService: PaymentService,
     private readonly _route: ActivatedRoute,
     private readonly _dialog: MatDialog,
   ) {}
@@ -43,11 +45,13 @@ export class TableDetailsComponent implements OnInit {
         this.refreshTable();
       });
     });
+
+    this._paymentService.onItemPaidFor().subscribe(this.onItemPaidFor.bind(this));
   }
 
   onTableNameChange(table: Table, tableName: string) {
-    this._tableService.updateTable(table._id, { name: tableName }).subscribe((updatedTable: Table) => {
-      table.name = updatedTable.name;
+    this._tableService.updateTable(table._id, { name: tableName }).subscribe(() => {
+      table.name = tableName;
     });
   }
 
@@ -65,22 +69,31 @@ export class TableDetailsComponent implements OnInit {
   }
 
   onItemNameChange(item: TableItem, itemName: string) {
-    this._tableItemService.updateTableItem(item._id, { name: itemName }).subscribe((updatedItem: TableItem) => {
-      item.name = updatedItem.name;
+    this._tableItemService.updateTableItem(item._id, { name: itemName }).subscribe(() => {
+      item.name = itemName;
     });
   }
 
   onItemPriceChange(item: TableItem, itemPrice: string) {
-    this._tableItemService.updateTableItem(item._id, { price: parseFloat(itemPrice) }).subscribe((updatedItem: TableItem) => {
-      item.price = updatedItem.price;
+    this._tableItemService.updateTableItem(item._id, { price: +itemPrice }).subscribe(() => {
+      item.price = +itemPrice;
     });
   }
 
   removeItem(item: TableItem) {
-    this._tableItemService.removeTableItem(item).subscribe(() => {
+    this._tableItemService.removeTableItem(item._id).subscribe(() => {
       this.items.splice(this.items.indexOf(item), 1);
       this.refreshTable();
     });
+  }
+
+  payForItem(item: TableItem) {
+    this._paymentService.payForItem(item._id);
+  }
+
+  onItemPaidFor(itemId: string) {
+    this.items.find((item: TableItem) => item._id === itemId).paidFor = true;
+    this.refreshTable();
   }
 
   private addItemToTable(item: TableItem) {

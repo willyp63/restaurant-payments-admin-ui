@@ -11,11 +11,11 @@ export class TableItemService {
 
   constructor(private readonly http: HttpClient) { }
 
-  removeTableItem(item: TableItem): Observable<Object> {
-    return this.http.delete(`${environment.apiUrl}/table-item/${item._id}`) as Observable<Object>;
+  removeTableItem(itemId: string): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}/table-item/${itemId}`) as Observable<Object>;
   }
 
-  updateTableItem(itemId: string, item: TableItem): Observable<TableItem> {
-    return this.http.patch(`${environment.apiUrl}/table-item/${itemId}`, item) as Observable<TableItem>;
+  updateTableItem(itemId: string, item: Partial<TableItem>): Observable<Object> {
+    return this.http.patch(`${environment.apiUrl}/table-item/${itemId}`, item) as Observable<Object>;
   }
 }
