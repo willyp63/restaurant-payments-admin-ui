@@ -1,14 +1,17 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Table } from '../models/table.model';
-import { TableService } from '../services/table.service';
+import { Table } from '../../models/table.model';
+import { TableService } from '../../services/table.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { TableItem } from '../models/table-item.model';
+import { TableItem } from '../../models/table-item.model';
 import { MatDialog } from '@angular/material/dialog';
 import { NewItemDialogComponent } from './new-item-dialog/new-item-dialog.component';
-import { TableItemService } from '../services/table-item.service';
+import { TableItemService } from '../../services/table-item.service';
 import { toCanvas } from 'qrcode';
-import { PaymentService } from '../services/payment.service';
+import { PaymentService } from '../../services/payment.service';
+import { User } from '../../models/user.model';
+import { NewUserDialogComponent } from './new-user-dialog/new-user-dialog.component';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-table-details',
@@ -17,17 +20,21 @@ import { PaymentService } from '../services/payment.service';
 })
 export class TableDetailsComponent implements OnInit {
   tableDisplayedColumns: string[] = ['name', 'createdAt'];
-  itemsDisplayedColumns: string[] = ['name', 'price', 'paidFor', 'actions'];
+  usersDisplayedColumns: string[] = ['name', 'joinedTableAt'];
+  itemsDisplayedColumns: string[] = ['name', 'price', 'actions'];
   tableDataSource = new MatTableDataSource<Table>();
   itemsDataSource = new MatTableDataSource<TableItem>();
+  usersDataSource = new MatTableDataSource<User>();
   tableId: string;
   items: TableItem[] = [];
+  users: User[] = [];
 
   @ViewChild('qrCode') qrCodeEl: ElementRef;
 
   constructor(
     private readonly _tableService: TableService,
     private readonly _tableItemService: TableItemService,
+    private readonly _userService: UserService,
     private readonly _paymentService: PaymentService,
     private readonly _route: ActivatedRoute,
     private readonly _dialog: MatDialog,
@@ -41,12 +48,19 @@ export class TableDetailsComponent implements OnInit {
         toCanvas(this.qrCodeEl.nativeElement, table._id);
 
         this.tableDataSource.data = [table];
-        this.items = table.items;
-        this.refreshTable();
+        
+      });
+
+      this._tableService.getTableItems(this.tableId).subscribe((items: TableItem[]) => {
+        this.items = items;
+        this.refreshItemsTable();
+      });
+
+      this._tableService.getTableUsers(this.tableId).subscribe((users: User[]) => {
+        this.users = users;
+        this.refreshUsersTable();
       });
     });
-
-    this._paymentService.onItemPaidFor().subscribe(this.onItemPaidFor.bind(this));
   }
 
   onTableNameChange(table: Table, tableName: string) {
@@ -68,6 +82,19 @@ export class TableDetailsComponent implements OnInit {
     });
   }
 
+  openNewUserDialog() {
+    const dialogRef = this._dialog.open(NewUserDialogComponent, {
+      width: '250px',
+      data: { firstName: '', lastName: '', email: 'a@b.co', password: '123' },
+    });
+
+    dialogRef.afterClosed().subscribe((user: User) => {
+      if (user) {
+        this.addUserToTable(user);
+      }
+    });
+  }
+
   onItemNameChange(item: TableItem, itemName: string) {
     this._tableItemService.updateTableItem(item._id, { name: itemName }).subscribe(() => {
       item.name = itemName;
@@ -83,28 +110,31 @@ export class TableDetailsComponent implements OnInit {
   removeItem(item: TableItem) {
     this._tableItemService.removeTableItem(item._id).subscribe(() => {
       this.items.splice(this.items.indexOf(item), 1);
-      this.refreshTable();
+      this.refreshItemsTable();
     });
-  }
-
-  payForItem(item: TableItem) {
-    this._paymentService.payForItem(item._id);
-  }
-
-  onItemPaidFor(itemId: string) {
-    this.items.find((item: TableItem) => item._id === itemId).paidFor = true;
-    this.refreshTable();
   }
 
   private addItemToTable(item: TableItem) {
     this._tableService.addItemToTable(this.tableId, item).subscribe((insertedItem: TableItem) => {
       this.items.push(insertedItem);
-      this.refreshTable();
+      this.refreshItemsTable();
     });
   }
 
-  private refreshTable() {
+  private addUserToTable(user: User) {
+    this._userService.addUser(user).subscribe((insertedUser: User) => {
+      this._tableService.addUserToTable(this.tableId, insertedUser).subscribe(() => {
+        console.log('SUCCESS');
+      });
+    });
+  }
+
+  private refreshItemsTable() {
     this.itemsDataSource.data = this.items;
+  }
+
+  private refreshUsersTable() {
+    this.usersDataSource.data = this.users;
   }
 
 }

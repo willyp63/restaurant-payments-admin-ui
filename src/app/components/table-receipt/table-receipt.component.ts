@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
-import { TableService } from '../services/table.service';
+import { TableService } from '../../services/table.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Table } from '../models/table.model';
+import { Table } from '../../models/table.model';
 import { toCanvas } from 'qrcode';
 
 const SALES_TAX = .07;
@@ -32,7 +32,7 @@ export class TableReceiptComponent implements OnInit, AfterViewChecked {
       this._tableService.getTableById(tableId).subscribe((table: Table) => {
         this.table = table;
 
-        this.subtotal = table.items.reduce((total, item) => total + item.price, 0);
+        this.subtotal = 0; // table.items.reduce((total, item) => total + item.price, 0);
         this.tax = this.subtotal * SALES_TAX;
         this.total = this.subtotal + this.tax;
 

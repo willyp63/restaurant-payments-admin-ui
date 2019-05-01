@@ -17,7 +17,9 @@
       <!-- CreatedAt Column -->
       <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef> Created At </th>
-        <td mat-cell *matCellDef="let element"> {{element.createdAt}} </td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.createdAt | date: 'short' }}
+        </td>
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="tableDisplayedColumns"></tr>
@@ -27,6 +29,35 @@
     <div class="qr-code">
       <canvas #qrCode class="mat-elevation-z8"></canvas>
     </div>
+  </div>
+
+  <h2>Users:</h2>
+
+  <div class="users-table">
+    <table mat-table [dataSource]="usersDataSource" class="mat-elevation-z8 full-width">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.firstName | firstName }} {{ element.lastName | lastName }}
+        </td>
+      </ng-container>
+
+      <!-- Joined Table At Column -->
+      <ng-container matColumnDef="joinedTableAt">
+        <th mat-header-cell *matHeaderCellDef> Joined Table At </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.joinedTableAt | date: 'short' }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="usersDisplayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: usersDisplayedColumns;"></tr>
+    </table>
+
+    <button mat-fab color="accent" class="new-btn" (click)="openNewUserDialog()">
+      <mat-icon aria-label="Add">add</mat-icon>
+    </button>
   </div>
 
   <h2>Items:</h2>
@@ -46,15 +77,6 @@
         <th mat-header-cell *matHeaderCellDef> Price </th>
         <td mat-cell *matCellDef="let element">
           <app-editable-field [value]="element.price" (saved)="onItemPriceChange(element, $event)"></app-editable-field>
-        </td>
-      </ng-container>
-
-      <!-- Paid for Column -->
-      <ng-container matColumnDef="paidFor">
-        <th mat-header-cell *matHeaderCellDef> Paid For </th>
-        <td mat-cell *matCellDef="let element">
-          <mat-icon aria-label="Paid" *ngIf="element.paidFor" class="paid-for-icon">check_circle</mat-icon>
-          <mat-icon aria-label="Not paid" *ngIf="!element.paidFor" class="not-paid-for-icon">remove_circle</mat-icon>
         </td>
       </ng-container>
 

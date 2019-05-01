@@ -1,6 +1,9 @@
+import { User } from "./user.model";
+
 export interface TableItem {
   _id: string;
   name: string;
   price: number;
-  paidFor: boolean;
+  paidForAt?: string;
+  paidForBy?: User;
 }

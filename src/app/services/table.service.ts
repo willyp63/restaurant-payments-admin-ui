@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Table } from '../models/table.model';
 import { TableItem } from '../models/table-item.model';
+import { User } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class TableService {
@@ -31,6 +32,18 @@ export class TableService {
   }
 
   addItemToTable(tableId: string, item: Partial<TableItem>): Observable<TableItem> {
-    return this.http.post(`${environment.apiUrl}/table/${tableId}/add-item`, item) as Observable<TableItem>;
+    return this.http.post(`${environment.apiUrl}/table/${tableId}/items`, item) as Observable<TableItem>;
+  }
+
+  addUserToTable(tableId: string, user: Partial<User>): Observable<User> {
+    return this.http.post(`${environment.apiUrl}/table/${tableId}/users`, user) as Observable<User>;
+  }
+
+  getTableItems(tableId: string): Observable<TableItem[]> {
+    return this.http.get(`${environment.apiUrl}/table/${tableId}/items`) as Observable<TableItem[]>;
+  }
+
+  getTableUsers(tableId: string): Observable<User[]> {
+    return this.http.get(`${environment.apiUrl}/table/${tableId}/users`) as Observable<User[]>;
   }
 }
