@@ -16,6 +16,20 @@ h2 {
   position: relative;
 }
 
+.users-table {
+  padding-top: 48px;
+}
+
+.user-tree-node {
+  width: 100%;
+  padding: 4px 24px;
+
+  display: flex;
+  justify-content: space-between;
+
+  border-top: 1px solid map-get($mat-grey, 300);
+}
+
 .new-btn {
   position: absolute;
   top: -24px;

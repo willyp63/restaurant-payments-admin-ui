@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
-import { TableService } from '../../services/table.service';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Table } from '../../models/table.model';
+
 import { toCanvas } from 'qrcode';
+
+import { TableService } from 'src/app/services/table/table.service';
+import { Table } from 'src/app/models/table.model';
 
 const SALES_TAX = .07;
 

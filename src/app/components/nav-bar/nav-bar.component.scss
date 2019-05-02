@@ -1,0 +1,19 @@
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+mat-toolbar,
+.nav-underlay {
+  height: 64px;
+}
+
+@media print {
+  mat-toolbar,
+  .nav-underlay {
+    display: none;
+  }
+}

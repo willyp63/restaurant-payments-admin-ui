@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 import { MatTableDataSource } from '@angular/material/table';
-import { Table } from '../../models/table.model';
-import { TableService } from '../../services/table.service';
 import { MatDialog } from '@angular/material/dialog';
+
+import { Table } from 'src/app/models/table.model';
+import { TableService } from 'src/app/services/table/table.service';
+
 import { NewTableDialogComponent } from './new-table-dialog/new-table-dialog.component';
 
 @Component({
@@ -11,6 +14,7 @@ import { NewTableDialogComponent } from './new-table-dialog/new-table-dialog.com
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+
   displayedColumns: string[] = ['name', 'createdAt', 'actions'];
   dataSource = new MatTableDataSource<Table>();
   newTableIdx = 0;
@@ -58,4 +62,5 @@ export class DashboardComponent implements OnInit {
   private refreshTable() {
     this.dataSource.data = this.tables;
   }
+  
 }

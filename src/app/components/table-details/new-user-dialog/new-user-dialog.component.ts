@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TableItem } from 'src/app/models/table-item.model';
+
+import { TableItem } from 'src/app/models';
 
 @Component({
   selector: 'app-new-user-dialog',
@@ -11,7 +12,8 @@ export class NewUserDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<NewUserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TableItem) {}
+    @Inject(MAT_DIALOG_DATA) public data: TableItem,
+  ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
