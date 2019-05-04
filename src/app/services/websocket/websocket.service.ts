@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
-import * as io from 'socket.io-client';
 
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
 
-  private socket: SocketIOClient.Socket = io(environment.apiUrl);
+  private socket: WebSocket = new WebSocket(environment.apiWsUrl);
 
   emit(eventName: string, data: any) {
-    this.socket.emit(eventName, data);
+    this.socket.send(JSON.stringify({ event: eventName, data }));
   }
 
   on(eventName: string, onEvent: Function) {
-    this.socket.on(eventName, onEvent);
+    this.socket.addEventListener('message', (event: MessageEvent) => {
+      const eventData = JSON.parse(event.data);
+
+      if (eventData['event'] === eventName) {
+        onEvent(eventData['data']);
+      }
+    });
   }
   
 }
