@@ -30,7 +30,7 @@ export class WebsocketService {
     this.socket = new WebSocket(environment.apiWsUrl);
     this.socket.onclose = () => {
       console.log('SOCKET CLOSED ON ITS OWN');
-      setTimeout(this.initSocket, 500);
+      this.initSocket();
     };
   }
   
