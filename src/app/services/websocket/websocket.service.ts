@@ -6,7 +6,7 @@ import { environment } from 'src/environments/environment';
 export class WebsocketService {
 
   private socket: WebSocket;
-  private eventListeners: { [eventName: string]: Function[] }
+  private eventListeners: { [eventName: string]: Function[] } = {};
 
   emit(eventName: string, data: any) {
     if (!this.socket) { this.initSocket(); }
