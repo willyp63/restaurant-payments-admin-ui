@@ -9,14 +9,11 @@ export class WebsocketService {
   private eventListeners: { [eventName: string]: Function[] } = {};
 
   emit(eventName: string, data: any) {
-    if (!this.socket) { this.initSocket(); }
-
-    this.socket.send(JSON.stringify({ event: eventName, data }));
+    this.getSocket().send(JSON.stringify({ event: eventName, data }));
   }
 
   on(eventName: string, onEvent: Function) {
-    if (!this.socket) { this.initSocket(); }
-
+    // save refs to arguments
     this.eventListeners[eventName] = this.eventListeners[eventName] || [];
     this.eventListeners[eventName].push(onEvent);
 
@@ -24,7 +21,7 @@ export class WebsocketService {
   }
 
   private addEventListener(eventName: string, onEvent: Function) {
-    this.socket.addEventListener('message', (event: MessageEvent) => {
+    this.getSocket().addEventListener('message', (event: MessageEvent) => {
       const eventData = JSON.parse(event.data);
 
       if (eventData['event'] === eventName) {
@@ -33,18 +30,25 @@ export class WebsocketService {
     });
   }
 
+  private getSocket(): WebSocket {
+    if (!this.socket) { this.initSocket(); }
+    return this.socket;
+  }
+
   private initSocket() {
-    console.log('INIT SOCKET');
+    console.log('Initializing new WebSocket connectionn...');
     this.socket = new WebSocket(environment.apiWsUrl);
 
+    // add eventlisteners from old socket to new socket
     Object.keys(this.eventListeners).forEach(eventName => {
       this.eventListeners[eventName].forEach(onEvent => {
         this.addEventListener(eventName, onEvent);
       });
     });
 
+    // reopen socket if it closes on its own
     this.socket.onclose = () => {
-      console.log('SOCKET CLOSED ON ITS OWN');
+      console.log('WebSocket closed on its own...');
       this.initSocket();
     };
   }
