@@ -33,7 +33,6 @@ export class TableItemService {
   }
 
   getTableItems(tableId: string): Observable<TableItem[]> {
-    return this.http.get(`${environment.apiUrl}/${API_ROUTES.Tables}/${tableId}/${API_ROUTES.TableItems}`) as Observable<TableItem[]>;
     return merge(
       from([true]),
       this.onTableItemPaidFor(),
