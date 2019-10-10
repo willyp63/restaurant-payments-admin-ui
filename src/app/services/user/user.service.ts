@@ -47,6 +47,7 @@ export class UserService {
   }
 
   getTableUsers(tableId: string): Observable<User[]> {
+    return this.http.get(`${environment.apiUrl}/${API_ROUTES.Tables}/${tableId}/${API_ROUTES.Users}`) as Observable<User[]>;
     return merge(
       from([1]),
       this.onUserJoinedTable(),
